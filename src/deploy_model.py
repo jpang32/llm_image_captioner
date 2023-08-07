@@ -1,14 +1,14 @@
 import sagemaker
 import boto3
+import boto3.session
 from sagemaker.huggingface import HuggingFaceModel
-
+import os
 
 if __name__ == "__main__":
-	try:
-		role = sagemaker.get_execution_role()
-	except ValueError:
-		iam = boto3.client('iam')
-		role = iam.get_role(RoleName='llm_img_captioning_sagemaker')['Role']['Arn']
+	session = boto3.session.Session(profile_name=os.environ['AWS_PROFILE'])
+
+	iam = session.client('iam')
+	role = iam.get_role(RoleName='sagemaker_llm')['Role']['Arn']
 
 	# Hub Model configuration. https://huggingface.co/models
 	hub = {
