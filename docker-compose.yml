@@ -1,0 +1,11 @@
+---
+version: "3.3"
+services:
+  serve:
+    build: .
+    container_name: test_llm_serve
+    command: serve
+    volumes:
+      - ./test:/opt/ml/
+    env_file:
+      - .env
