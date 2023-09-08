@@ -3,6 +3,9 @@
 *.pth
 *.tar.*
 
+# Cache files
+__pycache__
+
 # Pycharm configs
 .idea/
 
