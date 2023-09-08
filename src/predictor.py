@@ -7,11 +7,12 @@ import io
 import json
 import os
 import pickle
+import tarfile
 
 import pandas as pd
 from fastapi import FastAPI, status, Request, Response
 
-model_path = os.environ.get("ARTIFACT_PATH", "/opt/ml/model")
+model_dir = os.environ.get("ARTIFACT_PATH", "/opt/ml/model")
 
 BLIP_MODEL_VERSION = os.environ.get("BLIP_MODEL_VERSION", 1)
 BLIP_PATH = os.environ.get("BLIP_PATH", f"blip/{BLIP_MODEL_VERSION}/model.pt")
@@ -19,8 +20,6 @@ BLIP_PATH = os.environ.get("BLIP_PATH", f"blip/{BLIP_MODEL_VERSION}/model.pt")
 LLAMA_MODEL_VERSION = os.environ.get("LLAMA_MODEL_VERSION", 1)
 LLAMA_PATH = os.environ.get("LLAMA_PATH", f"llama/{LLAMA_MODEL_VERSION}/model.pt")
 
-FEATURES = os.environ.get("FEATURES", "")
-FEATURES = FEATURES.split(",")
 
 # A singleton for holding the model. This simply loads the model and holds it.
 # It has a predict function that does a prediction based on the model and the input data.
@@ -29,11 +28,12 @@ class BlipModel(object):
     model = None  # Where we keep the model when it's loaded
 
     @classmethod
-    def get_model(cls, model_path):
+    def get_model(cls, model_dir):
         """Get the model object for this instance, loading it if it's not already loaded."""
         if cls.model == None:
-            with open(os.path.join(model_path, BLIP_PATH), "rb") as inp:
-                cls.model = pickle.load(inp)
+            with tarfile.open(f"{model_dir}/blip.tar.gz", "r:gz") as file:
+                # cls.model = tarfile.open('blip.tar.gz', 'r:gz')
+                print(file.getmembers())
         return cls.model
 
     @classmethod
@@ -42,7 +42,7 @@ class BlipModel(object):
         Args:
             input (a pandas dataframe): The data on which to do the predictions. There will be
                 one prediction per row in the dataframe"""
-        clf = cls.get_model(model_path=model_path)
+        clf = cls.get_model(model_dir=model_dir)
 
         if hasattr(clf, "predict_proba"):
             return clf.predict_proba(data)[:, 1]
@@ -59,14 +59,17 @@ app = FastAPI()
 def ping(request: Request):
     """Determine if the container is working and healthy. In this sample container, we declare
     it healthy if we can load the model successfully."""
-    print(model_path)
+    print(model_dir)
     print(request)
-    health = BlipModel.get_model(model_path) is not None  # You can insert a health check here
+    print(os.environ)
+
+    # TODO: Use built in read function instead?
+    health = BlipModel.get_model(model_dir) is not None  # You can insert a health check here
 
     status = 200 if health else 404
     response = Response(
         content="Healthy",
-        status_code=status.HTTP_200_OK,
+        status_code=status,
         media_type="text/plain",
     )
     return response
