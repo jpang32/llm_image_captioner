@@ -1,5 +1,6 @@
 import json
 import os
+from typing import Union
 
 from pathlib import Path
 from transformers import pipeline
@@ -47,7 +48,7 @@ def infer_task_from_model_architecture(model_config_path: str, architecture_inde
     os.environ["HF_TASK"] = task
     return task
 
-def get_pipeline(task: str, device: int, model_dir: Path, **kwargs) -> Pipeline:
+def get_pipeline(task: str, device: Union[int, str], model_dir: Path, **kwargs) -> Pipeline:
     """
     create pipeline class for a specific task based on local saved model
     """
@@ -66,15 +67,13 @@ def get_pipeline(task: str, device: int, model_dir: Path, **kwargs) -> Pipeline:
     }:
         kwargs["feature_extractor"] = model_dir
 
-    tokenizer = Tokenizer.from_pretrained(os.environ["HF_MODEL_ID"])
-
     # load pipeline
-    hf_pipeline = pipeline(task=task, model=model_dir, tokenizer=tokenizer, device=device, **kwargs)
+    hf_pipeline = pipeline(task=task, model=model_dir, device=device, **kwargs)
 
     return hf_pipeline
 
 
-def model_fn(self, model_dir, context=None):
+def model_fn(model_dir, context=None):
         """
         The Load handler is responsible for loading the Hugging Face transformer model.
         It can be overridden to load the model from storage.
@@ -88,10 +87,10 @@ def model_fn(self, model_dir, context=None):
         """
         # gets pipeline from task tag
         if "HF_TASK" in os.environ:
-            hf_pipeline = get_pipeline(task=os.environ["HF_TASK"], model_dir=model_dir, device=self.device)
+            hf_pipeline = get_pipeline(task=os.environ["HF_TASK"], model_dir=model_dir, device=os.environ["DEVICE"])
         elif "config.json" in os.listdir(model_dir):
             task = infer_task_from_model_architecture(f"{model_dir}/config.json")
-            hf_pipeline = get_pipeline(task=task, model_dir=model_dir, device=self.device)
+            hf_pipeline = get_pipeline(task=task, model_dir=model_dir, device=os.environ["DEVICE"])
         else:
             raise ValueError(
                 f"You need to define one of the following {list(SUPPORTED_TASKS.keys())} as env 'HF_TASK'.", 403
