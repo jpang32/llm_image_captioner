@@ -1,3 +1,11 @@
+"""
+An inference script written to override the one provided by the HF container.
+
+The load function within the HF container was not correctly supplying the 
+tokenizer to the pipeline. This requires us to create our own model_fn function,
+which will override the one created by HF to load the model.
+"""
+
 import json
 import os
 from typing import Union
@@ -6,6 +14,9 @@ from pathlib import Path
 from transformers import pipeline
 from transformers.pipelines import SUPPORTED_TASKS, Pipeline
 from tokenizers import Tokenizer
+import logging
+
+logger = logging.getLogger(__name__)
 
 ARCHITECTURES_2_TASK = {
     "TapasForQuestionAnswering": "table-question-answering",
@@ -85,6 +96,8 @@ def model_fn(model_dir, context=None):
         Returns:
             hf_pipeline (Pipeline): A Hugging Face Transformer pipeline.
         """
+        logger.info("Loading model with custom inference script")
+
         # gets pipeline from task tag
         if "HF_TASK" in os.environ:
             hf_pipeline = get_pipeline(task=os.environ["HF_TASK"], model_dir=model_dir, device=os.environ["DEVICE"])
