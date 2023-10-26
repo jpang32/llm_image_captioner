@@ -1,0 +1,6 @@
+name: album_storyteller
+
+dependencies:
+  - python=3.11
+  - pip:
+    - requests
