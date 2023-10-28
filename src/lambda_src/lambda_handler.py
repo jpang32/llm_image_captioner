@@ -11,6 +11,7 @@ logger.setLevel(logging.INFO)
 OPEN_AI_TOKEN = os.getenv("OPEN_AI_TOKEN")
 OPEN_AI_MODEL = os.getenv("OPEN_AI_MODEL")
 
+
 def lambda_handler(event, context):
     # get header method and check if POST
     # If not, return error
@@ -74,7 +75,15 @@ def get_openai_model_response(image_captions: List[Dict[str, str]]):
         headers=headers
     ).json()
 
-    model_response = open_ai_response["choices"][0]["message"]["content"]
+    model_content = open_ai_response["choices"][0]["message"]["content"]
 
+    response_body = json.loads(model_content)
+    return {
+        "statusCode": 200,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "body": response_body
+    }
 
 

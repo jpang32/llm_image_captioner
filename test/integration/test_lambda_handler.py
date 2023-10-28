@@ -2,6 +2,7 @@ import json
 import pytest
 from src.lambda_src.lambda_handler import get_openai_model_response
 
+
 @pytest.mark.parametrize(
     "image_captions",
     [
@@ -24,10 +25,10 @@ from src.lambda_src.lambda_handler import get_openai_model_response
 def test_get_openai_model_response(image_captions):
 
     result = get_openai_model_response(image_captions)
-    result_json = json.loads(result)
+    result_body = result["body"]
 
-    for image_caption in image_captions:
-        assert result_json["image_path"] == image_caption["image_path"]
-        assert result_json["image_caption"] == image_caption["image_caption"]
-        assert "story" in result_json
+    for i, image_caption in enumerate(image_captions):
+        assert result_body[i]["image_path"] == image_caption["image_path"]
+        assert result_body[i]["image_caption"] == image_caption["image_caption"]
+        assert "story" in result_body[i]
 
