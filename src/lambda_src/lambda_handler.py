@@ -22,14 +22,19 @@ def lambda_handler(event, context):
             "headers": {
                 "Content-Type": "application/json"
             },
-            "isBase64Encoded": False,
             "body": json.dumps({"message":"Invalid HTTP method used"})
         }
 
     # Call function get response from GPT-4
     initial_stories = get_openai_model_response()
 
-    return {"message": initial_stories}
+    return {
+        "statusCode": 200,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "body": initial_stories
+    }
 
 
 def get_openai_model_response(image_captions: List[Dict[str, str]]):
@@ -77,13 +82,4 @@ def get_openai_model_response(image_captions: List[Dict[str, str]]):
 
     model_content = open_ai_response["choices"][0]["message"]["content"]
 
-    response_body = json.loads(model_content)
-    return {
-        "statusCode": 200,
-        "headers": {
-            "Content-Type": "application/json"
-        },
-        "body": response_body
-    }
-
-
+    return json.loads(model_content)
