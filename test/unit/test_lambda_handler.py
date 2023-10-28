@@ -1,8 +1,7 @@
 from unittest.mock import patch
-
 import pytest
 
-from src.lambda_src.lambda_handler import get_openai_model_response, lambda_handler
+from src.lambda_src.lambda_handler import lambda_handler
 
 FILEPATH = "src.lambda_src.lambda_handler"
 
@@ -11,12 +10,15 @@ FILEPATH = "src.lambda_src.lambda_handler"
     "event",
     [
         {
+            "body": '[{"image_path": "blah", "image_caption": "blah"}]',
             "http_method": "POST"
         },
         {
+            "body": '[{"image_path": "blah", "image_caption": "blah"}]',
             "http_method": "GET"
         },
         {
+            "body": '[{"image_path": "blah", "image_caption": "blah"}]',
             "http_method": "PUT"
         }
     ]
@@ -38,19 +40,3 @@ def test_lambda_handler(mock_openai_model_response, event, sample_openai_respons
     else:
         mock_openai_model_response.assert_called_once()
         assert 200 <= response["statusCode"] <= 299
-
-
-@patch(f"{FILEPATH}.requests.Response")
-@patch(f"{FILEPATH}.requests")
-def test_get_openai_response(mock_requests, mock_response, sample_openai_response):
-    mock_response.json.return_value = sample_openai_response
-    mock_requests.post.return_value = mock_response
-
-    response = get_openai_model_response(image_captions=[])
-
-    assert type(response) == list
-
-    expected_keys = ["image_path", "image_caption", "story"]
-    response_body_has_expected_keys = all(set(expected_keys) == set(item.keys()) for item in response)
-    assert response_body_has_expected_keys
-
