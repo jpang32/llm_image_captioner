@@ -45,7 +45,7 @@ def get_openai_model_response(image_captions: List[Dict[str, str]]):
                  ", create a vivid story " \
                  "that incorporates the key elements from each " \
                  "photo. Turn the photo descriptions into a fun and " \
-                 "engaging story. Your response should be a dictionary following the " \
+                 "engaging story. Your response should be a json-serializable dictionary following the " \
                  "format of this example: [{'image_path': 'birthday/BpsSOqpog98/" \
                  "BpsSOqpog98-0190.jpg', 'image_caption': 'a child blowing out candles" \
                  " at a birthday party', 'story': 'the story you generated'}, {...}, ...]"
