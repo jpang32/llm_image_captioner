@@ -2,6 +2,24 @@ import pytest
 
 
 @pytest.fixture()
+def sample_api_gateway_event():
+    return {
+        "resource": "/",
+        "path": "/",
+        "httpMethod": "GET",
+        "requestContext": {},
+        "headers": {},
+        "multiValueHeaders": {},
+        "queryStringParameters": None,
+        "multiValueQueryStringParameters": None,
+        "pathParameters": None,
+        "stageVariables": None,
+        "body": None,
+        "isBase64Encoded": False
+    }
+
+
+@pytest.fixture()
 def sample_openai_response():
     return \
     {
