@@ -11,8 +11,8 @@ FILEPATH = "src.lambda_src.utils"
     [
         ([], False),
         ([{"image_path": "blah"}], False),
-        ([{"image_path": "blah", "image_caption": "blah"}], True)
-    ]
+        ([{"image_path": "blah", "image_caption": "blah"}], True),
+    ],
 )
 def test_validate_request_body(request_body, expected):
     assert validate_request_body(request_body) == expected
@@ -29,5 +29,7 @@ def test_get_openai_response(mock_requests, mock_response, sample_openai_respons
     assert type(response) == list
 
     expected_keys = ["image_path", "image_caption", "story"]
-    response_body_has_expected_keys = all(set(expected_keys) == set(item.keys()) for item in response)
+    response_body_has_expected_keys = all(
+        set(expected_keys) == set(item.keys()) for item in response
+    )
     assert response_body_has_expected_keys
