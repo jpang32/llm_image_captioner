@@ -1,9 +1,9 @@
 name: Python package
 
-on: [workflow_dispatch]
+on: push
 
 jobs:
-  test:
+  unit_test:
     defaults:
         run:
           shell: bash -l {0}
@@ -19,7 +19,7 @@ jobs:
     - uses: conda-incubator/setup-miniconda@v2
       with:
         activate-environment: album_storyteller
-        environment-file: example-environment.yml
+        environment-file: environment.yml
         auto-activate-base: false
     - name: Test with pytest
       run: |

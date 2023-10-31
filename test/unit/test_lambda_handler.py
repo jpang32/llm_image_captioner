@@ -11,17 +11,17 @@ FILEPATH = "src.lambda_src.lambda_handler"
     [
         {
             "body": '[{"image_path": "blah", "image_caption": "blah"}]',
-            "http_method": "POST"
+            "http_method": "POST",
         },
         {
             "body": '[{"image_path": "blah", "image_caption": "blah"}]',
-            "http_method": "GET"
+            "http_method": "GET",
         },
         {
             "body": '[{"image_path": "blah", "image_caption": "blah"}]',
-            "http_method": "PUT"
-        }
-    ]
+            "http_method": "PUT",
+        },
+    ],
 )
 @patch(f"{FILEPATH}.get_openai_model_response")
 def test_lambda_handler(mock_openai_model_response, event, sample_openai_response):
@@ -29,9 +29,7 @@ def test_lambda_handler(mock_openai_model_response, event, sample_openai_respons
     response = lambda_handler(event=event, context=None)
 
     assert type(response) == dict
-    assert response["headers"] == {
-        "Content-Type": "application/json"
-    }
+    assert response["headers"] == {"Content-Type": "application/json"}
     assert "body" in response
 
     if event["http_method"] != "POST":

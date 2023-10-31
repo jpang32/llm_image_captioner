@@ -9,7 +9,6 @@ logger.setLevel(logging.INFO)
 
 
 class Response:
-
     def __init__(self, status_code: int, body: Any):
         self.status_code = status_code
         self.body = body
@@ -18,7 +17,7 @@ class Response:
         return {
             "statusCode": self.status_code,
             "headers": {"Content-Type": "application/json"},
-            "body": self.body
+            "body": self.body,
         }
 
 
@@ -36,7 +35,7 @@ def lambda_handler(event, context):
         logger.error(f"Invalid request body ({request_body})")
         return Response(
             status_code=400,
-            body="Invalid request body. Must be in form [{image_path:'', image_captions:''}, {...}, ...]"
+            body="Invalid request body. Must be in form [{image_path:'', image_captions:''}, {...}, ...]",
         ).to_dict()
 
     stories = get_openai_model_response(image_captions=request_body)

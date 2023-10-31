@@ -1,6 +1,43 @@
 name: album_storyteller
-
+channels:
+  - defaults
 dependencies:
-  - python=3.11
+  - bzip2=1.0.8
+  - ca-certificates=2023.08.22
+  - iniconfig=1.1.1
+  - libffi=3.4.4
+  - ncurses=6.4
+  - openssl=3.0.11
+  - packaging=23.1
+  - pip=23.3
+  - pluggy=1.0.0
+  - pytest=7.4.0
+  - python=3.11.5
+  - readline=8.2
+  - setuptools=68.0.0
+  - sqlite=3.41.2
+  - tk=8.6.12
+  - tzdata=2023c
+  - wheel=0.41.2
+  - xz=5.4.2
+  - zlib=1.2.13
   - pip:
-    - requests
+      - black==23.10.1
+      - certifi==2023.7.22
+      - cfgv==3.4.0
+      - charset-normalizer==3.3.0
+      - click==8.1.7
+      - distlib==0.3.7
+      - filelock==3.13.0
+      - identify==2.5.31
+      - idna==3.4
+      - mypy-extensions==1.0.0
+      - nodeenv==1.8.0
+      - pathspec==0.11.2
+      - platformdirs==3.11.0
+      - pre-commit==3.5.0
+      - pyyaml==6.0.1
+      - requests==2.31.0
+      - urllib3==2.0.7
+      - virtualenv==20.24.6
+
