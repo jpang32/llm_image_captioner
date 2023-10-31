@@ -3,7 +3,7 @@ name: Python package
 on: push
 
 jobs:
-  test:
+  unit_test:
     defaults:
         run:
           shell: bash -l {0}
