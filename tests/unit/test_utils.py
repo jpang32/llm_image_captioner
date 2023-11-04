@@ -1,9 +1,9 @@
 import pytest
 from unittest.mock import patch
 
-from src.lambda_src.utils import get_openai_model_response, validate_request_body
+from lambdas.inference.utils import get_openai_model_response, validate_request_body
 
-FILEPATH = "src.lambda_src.utils"
+FILEPATH = "lambdas.inference.utils"
 
 
 @pytest.mark.parametrize(
@@ -23,6 +23,7 @@ def test_validate_request_body(request_body, expected):
 def test_get_openai_response(mock_requests, mock_response, sample_openai_response):
     mock_response.json.return_value = sample_openai_response
     mock_requests.post.return_value = mock_response
+    test = mock_requests.post.return_value.json.return_value
 
     response = get_openai_model_response(image_captions=[])
 
@@ -32,4 +33,5 @@ def test_get_openai_response(mock_requests, mock_response, sample_openai_respons
     response_body_has_expected_keys = all(
         set(expected_keys) == set(item.keys()) for item in response
     )
+
     assert response_body_has_expected_keys

@@ -1,9 +1,9 @@
 from unittest.mock import patch
 import pytest
 
-from src.lambda_src.lambda_handler import lambda_handler
+from lambdas.inference.lambda_handler import lambda_handler
 
-FILEPATH = "src.lambda_src.lambda_handler"
+FILEPATH = "lambdas.inference.lambda_handler"
 
 
 @pytest.mark.parametrize(
