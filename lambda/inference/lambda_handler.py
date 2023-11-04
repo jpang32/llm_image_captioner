@@ -2,7 +2,7 @@ import json
 import logging
 from typing import Any
 
-from src.lambda_src.utils import get_openai_model_response, validate_request_body
+from utils import get_openai_model_response, validate_request_body
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
