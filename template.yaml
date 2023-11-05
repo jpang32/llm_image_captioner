@@ -32,8 +32,8 @@ Resources:
             Method: post
             Auth:
     Metadata:
-      Dockerfile: Dockerfile
-      DockerContext: ./
+      Dockerfile: ../../Dockerfile
+      DockerContext: lambdas/inference
       DockerTag: v0.0.0
 
 Outputs:
