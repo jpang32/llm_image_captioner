@@ -1,0 +1,14 @@
+{
+  "resource": "/",
+  "path": "/inference",
+  "httpMethod": "POST",
+  "requestContext": {},
+  "headers": {},
+  "multiValueHeaders": {},
+  "queryStringParameters": null,
+  "multiValueQueryStringParameters": null,
+  "pathParameters": null,
+  "stageVariables": null,
+  "body": "[{\"image_path\": \"test_path/image1.png\",\"image_caption\": \"a child pulls on a tablecloth\"}, {\"image_path\": \"other_test_path/image2.png\", \"image_caption\": \"a child starts to pull a tablecloth off of the table\"},{\"image_path\": \"other_other_test_path/image2.png\",\"image_caption\": \"a child covered in food in front of a table with food on the floor\"}]",
+  "isBase64Encoded": false
+}
